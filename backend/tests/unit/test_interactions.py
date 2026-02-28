@@ -32,3 +32,23 @@ def test_filter_excludes_interaction_with_different_learner_id() -> None:
     assert len(result) == 2
     assert result[0].id == 1
     assert result[1].id == 2
+
+# AI-generated stuff:
+
+def test_filter_returns_empty_when_no_item_ids_match() -> None:
+    interactions = [_make_log(1, 1, 10), _make_log(2, 2, 20)]
+    result = _filter_by_item_id(interactions, 30)
+    assert result == []
+
+
+def test_filter_matches_boundary_item_id_zero() -> None:
+    interactions = [_make_log(1, 1, 0), _make_log(2, 2, 1), _make_log(3, 3, 0)]
+    result = _filter_by_item_id(interactions, 0)
+    assert [interaction.id for interaction in result] == [1, 3]
+
+
+def test_filter_keeps_all_duplicate_item_id_matches() -> None:
+    interactions = [_make_log(1, 1, 42), _make_log(2, 2, 42), _make_log(3, 3, 42)]
+    result = _filter_by_item_id(interactions, 42)
+    assert len(result) == 3
+    assert [interaction.id for interaction in result] == [1, 2, 3]
