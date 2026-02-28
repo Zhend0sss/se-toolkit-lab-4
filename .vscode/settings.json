@@ -21,7 +21,7 @@
 
   // Change the Primary Sidebar location
 
-  "workbench.sideBar.location": "right",
+  "workbench.sideBar.location": "left",
 
   // Markdown settings
 
@@ -30,7 +30,7 @@
 
   "markdown.preview.scrollEditorWithPreview": true,
   "markdown.preview.scrollPreviewWithEditor": true,
-  
+
   "nix.enableLanguageServer": true,
   "nix.serverPath": "nil",
   "nix.formatterPath": "nixfmt"
