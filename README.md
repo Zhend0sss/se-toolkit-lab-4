@@ -1,8 +1,7 @@
 # Lab 4 — Testing, Front-end, and AI Agents
 
-> [!CAUTION]
-> The lab is UNDER CONSTRUCTION!!
-> Instructions may change.
+> [!NOTE]
+> The lab will be modified throughout the course.
 
 [Sync your cloned repo with the upstream](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork#syncing-a-fork-branch-from-the-command-line) from time to time.
 
@@ -41,11 +40,9 @@ When stuck or not sure, ask an LLM:
 
 > Why is this task important? What exactly do I need to do?
 
-Provide enough context by giving it the whole file, not one or two lines.
+Provide enough context by giving it the whole file, not one or two lines. Ideally pass the setup file too.
 
 Remember: Use the LLM to enhance your understanding, not replace it.
-
-Evaluate LLM answers critically, and verify them against credible sources such as official documentation, course materials, and what you observe in reality.
 
 ## Learning outcomes
 

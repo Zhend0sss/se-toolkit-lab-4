@@ -24,10 +24,8 @@ Finally, you will use an AI agent to add a new feature to the front-end.
     - [1.3.1. Run the dev server](#131-run-the-dev-server)
     - [1.3.2. Edit a source file and observe hot reload](#132-edit-a-source-file-and-observe-hot-reload)
   - [1.4. Part B: Prod version](#14-part-b-prod-version)
-    - [1.4.1. Build the production bundle](#141-build-the-production-bundle)
-    - [1.4.2. Copy the `dist/` folder to the VM](#142-copy-the-dist-folder-to-the-vm)
-    - [1.4.3. Configure `Caddy`](#143-configure-caddy)
-    - [1.4.4. Verify in the browser](#144-verify-in-the-browser)
+    - [1.4.1. Deploy the front-end to the VM](#141-deploy-the-front-end-to-the-vm)
+    - [1.4.2. Verify in the browser](#142-verify-in-the-browser)
   - [1.5. Part C: Modify the front-end with an AI agent](#15-part-c-modify-the-front-end-with-an-ai-agent)
     - [1.5.1. Add a column using the AI agent](#151-add-a-column-using-the-ai-agent)
     - [1.5.2. Verify in the dev server](#152-verify-in-the-dev-server)
@@ -64,22 +62,25 @@ Title: `[Task] Add Front-end`
 
    1. [Open the file](../../../wiki/vs-code.md#open-the-file) [`frontend/.env.example`](../../../frontend/.env.example).
    2. Copy it to `frontend/.env`.
-   3. Fill in `VITE_API_URL` with your API URL, for example `http://<your-vm-ip-address>:<api-port>`.
-   4. Fill in `VITE_API_TOKEN` with your [`<api-token>`](../../../wiki/web-development.md#api-token).
+   3. Set `VITE_API_TARGET` to the URL of your back-end API, for example `http://<your-vm-ip-address>:<api-port>`.
 
-4. [Run using the `VS Code Terminal`](../../../wiki/vs-code.md#run-a-command-using-the-vs-code-terminal):
+> [!NOTE]
+> The dev server proxies API requests (e.g., `/items`) to the `VITE_API_TARGET` URL.
+> The API token is entered at runtime through the front-end UI — it is not stored in the `.env` file.
+
+1. [Run in the `VS Code Terminal`](../../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
    npm install
    ```
 
-5. [Run using the `VS Code Terminal`](../../../wiki/vs-code.md#run-a-command-using-the-vs-code-terminal):
+2. [Run in the `VS Code Terminal`](../../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
    npm run dev
    ```
 
-6. Open the URL shown in the terminal output in a browser.
+3. Open the URL shown in the terminal output in a browser.
 
    The output should be similar to this:
 
@@ -87,7 +88,7 @@ Title: `[Task] Add Front-end`
    Local: http://localhost:5173/
    ```
 
-7. Verify that the front-end loads and displays data from the API.
+4. Verify that the front-end loads and displays data from the API.
 
 #### 1.3.2. Edit a source file and observe hot reload
 
@@ -99,58 +100,39 @@ Title: `[Task] Add Front-end`
 ### 1.4. Part B: Prod version
 
 > [!NOTE]
-> A production build compiles the front-end into a `dist/` folder of static [HTML](../../../wiki/web-development.md#html), [CSS](../../../wiki/web-development.md#css), and [JavaScript](../../../wiki/web-development.md#javascript) files.
-> These files are copied to the VM and served by `Caddy` — the same model as uploading to a [CDN](../../../wiki/web-development.md#cdn).
+> A production build compiles the front-end into static [HTML](../../../wiki/web-development.md#html), [CSS](../../../wiki/web-development.md#css), and [JavaScript](../../../wiki/web-development.md#javascript) files.
+> In this project, the [`Caddy`](../../../wiki/caddy.md) [Docker](../../../wiki/docker.md#docker) container builds the front-end and serves the static files.
+> The [`Caddyfile`](../../../wiki/caddy.md#caddyfile) routes API requests to the back-end and serves the front-end for all other paths.
 
-#### 1.4.1. Build the production bundle
-
-1. [Run using the `VS Code Terminal`](../../../wiki/vs-code.md#run-a-command-using-the-vs-code-terminal):
-
-   ```terminal
-   npm run build
-   ```
-
-2. Verify that a `dist/` folder was created.
-
-#### 1.4.2. Copy the `dist/` folder to the VM
-
-1. Copy the `dist/` folder to the VM.
-
-   Method 1: use [`scp`](../../../wiki/ssh.md#scp):
-
-   ```terminal
-   scp -r dist/ <vm-user>@<vm-host>:/var/www/frontend/
-   ```
-
-   Method 2: use `rsync`:
-
-   ```terminal
-   rsync -av dist/ <vm-user>@<vm-host>:/var/www/frontend/
-   ```
-
-#### 1.4.3. Configure `Caddy`
+#### 1.4.1. Deploy the front-end to the VM
 
 1. [Connect to your VM](../../../wiki/vm.md#connect-to-the-vm).
-2. Edit the [`Caddyfile`](../../../wiki/caddy.md) on the VM to serve the static files.
-
-   Add the following block to the `Caddyfile`:
-
-   ```caddyfile
-   :<frontend-port> {
-       root * /var/www/frontend/dist
-       file_server
-   }
-   ```
-
-3. Reload `Caddy`:
+2. Navigate to the project directory and pull the latest changes:
 
    ```terminal
-   sudo systemctl reload caddy
+   cd se-toolkit-lab-4 && git pull
    ```
 
-#### 1.4.4. Verify in the browser
+3. Rebuild and restart the `caddy` service:
 
-1. Open the front-end URL in a browser: `<frontend-url>`
+   ```terminal
+   docker compose --env-file .env.docker.secret up --build caddy -d
+   ```
+
+> [!NOTE]
+> The `caddy` service uses a multi-stage [`Dockerfile`](../../../wiki/docker.md#dockerfile) (`frontend/Dockerfile`).
+> Stage 1 builds the front-end (`npm run build`), and stage 2 copies the output into the `Caddy` image.
+> Rebuilding the container is how you deploy front-end changes — there is no need to copy files manually.
+
+#### 1.4.2. Verify in the browser
+
+1. Open in a browser: `http://<your-vm-ip-address>:<app-port>/`.
+
+   Replace:
+
+   - [`<your-vm-ip-address>`](../../../wiki/vm.md#your-vm-ip-address)
+   - [`<app-port>`](../../../wiki/placeholders.md#app-port).
+
 2. Verify that the front-end loads and displays data from the API.
 
 ### 1.5. Part C: Modify the front-end with an AI agent
@@ -179,17 +161,6 @@ Title: `[Task] Add Front-end`
 
 #### 1.5.3. Deploy the change to the VM
 
-1. [Run using the `VS Code Terminal`](../../../wiki/vs-code.md#run-a-command-using-the-vs-code-terminal):
-
-   ```terminal
-   npm run build
-   ```
-
-2. Copy the updated `dist/` folder to the VM using the [same method as in Part B](#142-copy-the-dist-folder-to-the-vm).
-3. Open the front-end URL in the browser and verify the new column appears in the production build.
-
-### 1.6. Finish the task
-
 1. [Commit](../../../wiki/git-workflow.md#commit) your changes.
 
    Use the following commit message:
@@ -198,8 +169,28 @@ Title: `[Task] Add Front-end`
    feat: add description column to the front-end table
    ```
 
-2. [Create a PR](../../../wiki/git-workflow.md#create-a-pr-to-the-main-branch-in-your-fork) with your changes.
-3. [Get a PR review](../../../wiki/git-workflow.md#get-a-pr-review) and complete the subsequent steps in the `Git workflow`.
+2. Push your changes.
+3. [Connect to your VM](../../../wiki/vm.md#connect-to-the-vm).
+4. Navigate to the project directory and checkout your task branch:
+
+   ```terminal
+   cd se-toolkit-lab-4 && git fetch origin && git checkout <task-branch-name>
+   ```
+
+   Replace [`<task-branch-name>`](../../../wiki/git-workflow.md#task-branch-name) with the name of your branch.
+
+5. Rebuild and restart the `caddy` service:
+
+   ```terminal
+   docker compose --env-file .env.docker.secret up --build caddy -d
+   ```
+
+6. Open the [`<app-url>`](../../../wiki/placeholders.md#app-url) in the browser and verify the new column appears in the production build.
+
+### 1.6. Finish the task
+
+1. [Create a PR](../../../wiki/git-workflow.md#create-a-pr-to-the-main-branch-in-your-fork) with your changes.
+2. [Get a PR review](../../../wiki/git-workflow.md#get-a-pr-review) and complete the subsequent steps in the `Git workflow`.
 
 ---
 

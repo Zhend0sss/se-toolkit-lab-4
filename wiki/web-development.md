@@ -152,7 +152,9 @@ See [`curl`](./useful-programs.md#send-a-get-request-with-curl).
 ### Pretty-print the `JSON` response using `jq`
 
 1. [Install `jq`](./useful-programs.md#jq) if not installed.
-2. [Run using the `VS Code Terminal`](./vs-code.md#run-a-command-using-the-vs-code-terminal):
+2. To pretty-print the `JSON` response,
+
+   [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
    <command-that-produces-json-response> | jq .
@@ -174,8 +176,8 @@ curl -s https://jsonplaceholder.typicode.com/todos/1 | jq .
 
 `Firefox`:
 
-1. Click `Raw Data`
-2. Clik `Pretty Print`
+1. Click `Raw Data`.
+2. Click `Pretty Print`.
 
 <!-- TODO other browsers -->
 
@@ -193,7 +195,7 @@ A typical URL consists of several components:
 
 - **Scheme/Protocol**: Specifies how to access the resource (e.g., `http`, `https`, `ftp`).
 - **[Host](./computer-networks.md#host)/Domain**: The server where the resource is located (e.g., `www.example.com`).
-- **[Port](./linux.md#port)** (optional): The specific port number on the server (e.g., `:8080`).
+- **[Port](./computer-networks.md#port)** (optional): The specific port number on the server (e.g., `:8080`).
 - **Path**: The location of the specific resource on the server (e.g., `/folder/page.html`).
 - **Query parameters** (optional): Additional data passed to the server (e.g., `?param1=value1&param2=value2`).
 - **Fragment** (optional): Points to a specific section within the resource (e.g., `#section1`).

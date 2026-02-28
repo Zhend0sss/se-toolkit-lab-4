@@ -3,6 +3,7 @@
 <h2>Table of contents</h2>
 
 - [What is `Git`](#what-is-git)
+- [Remote](#remote)
 - [Commit](#commit)
   - [Commit hash](#commit-hash)
   - [Commit message](#commit-message)
@@ -28,6 +29,18 @@ Docs:
 
 - [Git Reference](https://git-scm.com/doc)
 - [Git Cheat Sheet](https://git-scm.com/cheat-sheet)
+
+## Remote
+
+A remote is a version of your [repository](./github.md#repository) hosted on a [remote host](./computer-networks.md#remote-host) (e.g., on [`GitHub`](./github.md#what-is-github)).
+
+Remotes let you push and pull changes between your local repository and the remote host.
+
+Docs:
+
+- [Git Remotes](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)
+
+See also [`upstream`](./github.md#upstream) and [`origin`](./github.md#origin).
 
 ## Commit
 
@@ -165,9 +178,9 @@ Typical sequence:
 
 ## Check your `Git` config
 
-1. Find out which name and email are used in [commits](#commit):
+1. To find out which name and email are used in [commits](#commit),
 
-   [Run using the `VS Code Terminal`](./vs-code.md#run-a-command-using-the-vs-code-terminal):
+   [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
    git config --global --list
@@ -193,22 +206,24 @@ Complete the following steps:
 
 ### Configure `user.name`
 
-1. Set the name that will be used in [commits](#commit):
+1. To set the name that will be used in [commits](#commit),
 
-   [Run using the `VS Code Terminal`](./vs-code.md#run-a-command-using-the-vs-code-terminal):
+   [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
-    ```terminal
-    git config --global user.name '<your-name>'
-    ```
+   ```terminal
+   git config --global user.name '<your-name>'
+   ```
 
-    Example: `git config --global user.name 'Inno SE Toolkit'`
+   Example: `git config --global user.name 'Inno SE Toolkit'`
 
 ### Configure `user.email`
 
-1. [Run using the `VS Code Terminal`](./vs-code.md#run-a-command-using-the-vs-code-terminal):
+1. To set the email that will be used in [commits](#commit),
 
-     ```terminal
-     git config --global user.email '<your-email>'
-     ```
+   [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
-     Example: `git config --global user.email 'inno-se-toolkit@gmail.com'`
+   ```terminal
+   git config --global user.email '<your-email>'
+   ```
+
+   Example: `git config --global user.email 'inno-se-toolkit@gmail.com'`

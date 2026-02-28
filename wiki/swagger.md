@@ -13,8 +13,6 @@
 
 `FastAPI` auto-generates `Swagger UI` at the `/docs` path.
 
-<!-- TODO screenshot -->
-
 Actions:
 
 - [Open `Swagger UI`](#open-swagger-ui)
@@ -23,7 +21,15 @@ Actions:
 
 ## Open `Swagger UI`
 
+**Locally** (services running on your machine):
+
 1. Open <http://127.0.0.1:42001/docs> in a browser.
+
+**On a deployed VM:**
+
+1. Open in a browser: `http://<your-vm-ip-address>:<api-port>/docs`.
+
+   Replace [`<your-vm-ip-address>`](./vm.md#your-vm-ip-address) with the IP address of your VM. See [`<api-port>`](./placeholders.md#api-port).
 
 ## Authorize in `Swagger UI`
 
